@@ -1,0 +1,48 @@
+# Modèle créé le : Wed Nov 20 23:44:46 CET 2019 
+
+QUARTIERS (<u>idQ</u>,
+ nomQ,
+ codeInsee,
+ coords,
+ typeQ,
+ #idC) 
+
+DEPARTEMENT (<u>idD</u>) 
+
+COMMUNE (<u>idC</u>,
+ nomC,
+ cpCommune,
+ #idD) 
+
+ROUTES (<u>idR</u>,
+ nomR,
+ typeTransport,
+ #idQ,
+ #idQ__DEPART) 
+
+PARTIE (<u>idPartie</u>,
+ dateDemarage,
+ nbDetecgives,
+ #idJ) 
+
+JOUEUSES (<u>idJ</u>,
+ nomJ,
+ emailJ) 
+
+CONFIGURATION (<u>idConfiguration</u>,
+ nomConfiguration,
+ dateConfiguratiion,
+ strategieConfiguration) 
+
+IMAGE (<u>idI</u>,
+ nomI,
+ cheminImage) 
+
+TOURSMISTERX (<u>idM</u>) 
+
+TRANSPORT (<u>idTransport</u>,
+ nomT) 
+
+INCLUS (<u>idI</u>,
+ <u>idConfiguration</u>) 
+
