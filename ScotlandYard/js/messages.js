@@ -47,13 +47,13 @@ if(params == null || !params) { // que pour page accueil, i.e., sans parametres
 }
 
 
-/* q3 (image dans paragraphe dans accueil) */
+/* q3 (Image dans paragraphe dans accueil) */
 if(params == null || !params) { // que pour page accueil, i.e., sans parametres
 	var img = document.querySelector("#contenu img");
 	if(img == null)
-		console.warn("Allez, on se dépêche de choisir son image et de la mettre en page d'accueil !");
+		console.warn("Allez, on se dépêche de choisir son Image et de la mettre en page d'accueil !");
 	else  
-		console.log("Ooooh, la jolie image !");
+		console.log("Ooooh, la jolie Image !");
 }
 
 
@@ -167,13 +167,13 @@ for (i = 0; i < imgs.length; i++) {
 	}
 }
 if(nbImgClass == 2) {
-	console.log("Bien, vous avez affecté la classe 'opaque' aux images logo et licence. Si le style lié à l'opacité est écrit et fonctionnel, bravo !");
+	console.log("Bien, vous avez affecté la classe 'opaque' aux Images logo et licence. Si le style lié à l'opacité est écrit et fonctionnel, bravo !");
 }
 else if(nbImgClass == 1) {
-	console.warn("À mi-chemin ! L'une des deux images possède bien une classe 'opaque'. Ca ne devrait pas être difficile de faire la même chose pour l'autre.");
+	console.warn("À mi-chemin ! L'une des deux Images possède bien une classe 'opaque'. Ca ne devrait pas être difficile de faire la même chose pour l'autre.");
 }
 else if(nbImgClass == 0) {
-	console.warn("Tout est clair, alors que deux images devraient être opaques ! Ajoutez-donc les classes manquantes.");
+	console.warn("Tout est clair, alors que deux Images devraient être opaques ! Ajoutez-donc les classes manquantes.");
 }
 if(nbImgFound < 2) {
 	console.warn("L'adresse du logo et/ou de la licence a été modifiée (attribut src). Les messages JS utilisent les valeurs de cet attribut src, donc mieux vaut remettre les valeurs initiales...");

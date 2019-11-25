@@ -7,27 +7,27 @@
 		
 		
 		<?php $nbJoueuses = mysqli_fetch_assoc($nbJ)?>
-		<p>Nombre total de joueuses: <?= $nbJoueuses['nbJ'] ?> </p>
+		<p>Nombre total de Joueuses: <?= $nbJoueuses['nbJ'] ?> </p>
 		
 		<?php $nbQuartiers = mysqli_fetch_assoc($nbQ)?>
-		<p>Nombre de quartiers: <?= $nbQuartiers['nbQ'] ?> </p>
+		<p>Nombre de Quartiers: <?= $nbQuartiers['nbQ'] ?> </p>
 		
 		
 		<?php $nbCommunes = mysqli_fetch_assoc($nbC)?>
-		<p>Nombre de communes: <?= $nbCommunes['nbC'] ?> </p>
+		<p>Nombre de Communes: <?= $nbCommunes['nbC'] ?> </p>
 		
 		<?php $nbDepartements = mysqli_fetch_assoc($nbD)?>
-		<p>Nombre de departements: <?= $nbDepartements['nbD'] ?> </p>
+		<p>Nombre de Departements: <?= $nbDepartements['nbD'] ?> </p>
 		
 		<table id="statistiqueTab">
-			<?php while ($joueuses = mysqli_fetch_assoc($critiques)) { ?>
+			<?php while ($Joueuses = mysqli_fetch_assoc($critiques)) { ?>
 					<tr>
 						<th>id</th>
 						<th>Joueuse</th>
 					</tr>
 					<tr>
-						<td><?= $joueuses['idJ'] ?></td>
-						<td><?= $joueuses['nomJ'] ?></td>
+						<td><?= $Joueuses['idJ'] ?></td>
+						<td><?= $Joueuses['nomJ'] ?></td>
 					</tr>
 			<?php } ?>
 		</table>

@@ -6,7 +6,7 @@
 ** Cela impose un nommage strict des fichiers.
 */
 
-$routes = array(
+$Routes = array(
 	'accueil' => array('controleur' => 'controleurAccueil', 'vue' => 'vueAccueil'),
 	'jouer' => array('controleur' => 'controleurAccueil', 'vue' => 'vueAccueil')
 );

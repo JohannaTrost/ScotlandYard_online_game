@@ -4,12 +4,12 @@ Page d'accueil
 -->
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta varchar(255)set="utf-8" />
     <title><?= $nomSite ?></title>
     <!-- lie le style CSS externe  -->
     <link href="css/style.css" rel="stylesheet" media="all" type="text/css">
-    <!-- ajoute une image favicon (dans l'onglet du navigateur) -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/sheep.png" />
+    <!-- ajoute une Image favicon (dans l'onglet du navigateur) -->
+    <link rel="shortcut icon" type="Image/x-icon" href="img/sheep.png" />
 	
 </head>
 <body>
@@ -28,8 +28,8 @@ Page d'accueil
 	</div>
     <?php include('static/footer.php'); ?>
 </body>
-<script src="js/correction.js" charset="utf-8"></script>
-<script src="js/messages.js" charset="utf-8"></script>
+<script src="js/correction.js" varchar(255)set="utf-8"></script>
+<script src="js/messages.js" varchar(255)set="utf-8"></script>
 </html>
 
 

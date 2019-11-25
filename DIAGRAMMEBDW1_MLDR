@@ -1,0 +1,13 @@
+# Modèle créé le : Sat Nov 23 13:55:00 CET 2019 
+Quartiers (idQ, nomQ, codeInsee, coords, typeQ, #idC) 
+Departement (idD) 
+Commune (idC, nomC, cpCommune, #idD) 
+Routes (idR, nomR, typeTransport, #idQ, #idQ_ARRIVER) 
+Partie (idPartie, dateDemarage, nbDetecgives, #idConfiguration) 
+Joueuses (idJ, nomJ, emailJ) 
+Configuration (idConfiguration, nomConfiguration, dateConfiguratiion, strategieConfiguration) 
+Image (idI, nomI, cheminImage) 
+ToursMisterX (idM, #idR) 
+Victoire (idV) 
+Participe (#idJ, #idPartie, #idV) 
+Inclus (#idI, #idConfiguration) 

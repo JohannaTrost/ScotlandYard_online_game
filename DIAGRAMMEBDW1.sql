@@ -1,5 +1,6 @@
 -- First check if the table exists not possible here (no right to delete foreign key constraint)
 
+	
 CREATE TABLE Quartiers (idQ int AUTO_INCREMENT NOT NULL,
 nomQ varchar(255)(255),
 codeInsee int,
@@ -38,7 +39,7 @@ PRIMARY KEY (idJ));
 CREATE TABLE Configuration (idConfigurationint AUTO_INCREMENT NOT NULL,
 nomConfiguration varchar(255),
 dateConfiguratiion date,
-strategieConfiguration enum('basique', 'économe', 'pistage')),
+strategieConfiguration enum('basique', 'Ã©conome', 'pistage')),
 PRIMARY KEY (idConfiguration));
 
 CREATE TABLE Image (idI int AUTO_INCREMENT NOT NULL,
