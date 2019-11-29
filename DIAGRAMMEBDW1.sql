@@ -1,45 +1,51 @@
 -- First check if the table exists not possible here (no right to delete foreign key constraint)
+DROP TABLE IF EXISTS Contient;
+DROP TABLE IF EXISTS Geometries;
+DROP TABLE IF EXISTS Inclus;
+DROP TABLE IF EXISTS Participe;
+DROP TABLE IF EXISTS ToursMisterX;
+DROP TABLE IF EXISTS Image;
+DROP TABLE IF EXISTS Joueuses;
+DROP TABLE IF EXISTS Partie;
+DROP TABLE IF EXISTS Configuration;
+DROP TABLE IF EXISTS Routes;
+DROP TABLE IF EXISTS Quartiers;
+DROP TABLE IF EXISTS Commune;
+DROP TABLE IF EXISTS Departement;
 
-	
 CREATE TABLE Quartiers (idQ int AUTO_INCREMENT NOT NULL,
-nomQ varchar(255)(255),
+nomQ varchar(255),
 codeInsee int,
-coords varchar(255),
 typeQ varchar(255),
-idC int,
+nomCommune varchar(255),
 PRIMARY KEY (idQ));
 
-CREATE TABLE Departement (idD int(100) AUTO_INCREMENT NOT NULL,
-PRIMARY KEY (idD));
-
-CREATE TABLE Commune (idC int AUTO_INCREMENT NOT NULL,
-nomC varchar(255),
+CREATE TABLE Commune (departement int NOT NULL,
+nomCommune varchar(255),
 cpCommune varchar(255),
-idD int,
-PRIMARY KEY (idC));
+PRIMARY KEY (nomCommune));
 
-CREATE TABLE Routes (idRint AUTO_INCREMENT NOT NULL,
-nomR varchar(255),
+CREATE TABLE Routes (idR int AUTO_INCREMENT NOT NULL,
 typeTransport varchar(255),
-idQ int ,
+idQ int,
 idQ_ARRIVER int,
 PRIMARY KEY (idR));
 
-CREATE TABLE Partie (idPartieint AUTO_INCREMENT NOT NULL,
+CREATE TABLE Partie (idPartie int AUTO_INCREMENT NOT NULL,
 dateDemarage DATE,
-nbDetecgives INT,
-idConfigurationint AUTO_INCREMENT,
+nbDetectives INT,
+idConfiguration int,
 PRIMARY KEY (idPartie));
 
-CREATE TABLE Joueuses (idJint AUTO_INCREMENT NOT NULL,
+CREATE TABLE Joueuses (idJ int AUTO_INCREMENT NOT NULL,
 nomJ varchar(255),
 emailJ varchar(255),
 PRIMARY KEY (idJ));
 
-CREATE TABLE Configuration (idConfigurationint AUTO_INCREMENT NOT NULL,
+CREATE TABLE Configuration (idConfiguration int AUTO_INCREMENT NOT NULL,
 nomConfiguration varchar(255),
 dateConfiguratiion date,
-strategieConfiguration enum('basique', 'économe', 'pistage')),
+strategieConfiguration enum('basique', 'économe', 'pistage'),
 PRIMARY KEY (idConfiguration));
 
 CREATE TABLE Image (idI int AUTO_INCREMENT NOT NULL,
@@ -47,30 +53,52 @@ nomI varchar(255),
 cheminImage varchar(255),
 PRIMARY KEY (idI));
 
-CREATE TABLE ToursMisterX (idMint AUTO_INCREMENT NOT NULL,
+CREATE TABLE ToursMisterX (idM int AUTO_INCREMENT NOT NULL,
 idR int,
 PRIMARY KEY (idM));
 
-CREATE TABLE Victoire (idV int AUTO_INCREMENT NOT NULL,
-PRIMARY KEY (idV));
+CREATE TABLE Geometries (latitude int NOT NULL,
+						 longitude int, 
+						 idQ int, 
+						 PRIMARY KEY (latitude, longitude));
 
-CREATE TABLE Participe (idJ int AUTO_INCREMENT NOT NULL,
-idPartieint AUTO_INCREMENT NOT NULL,
-idV int NOT NULL,
-PRIMARY KEY (idJ, idPartie, idV_Victoire));
+CREATE TABLE Participe (idJ int NOT NULL,
+idPartie int NOT NULL,
+victoire_PARTICIPE int,
+PRIMARY KEY (idJ, idPartie));
 
 CREATE TABLE Inclus (idI int AUTO_INCREMENT NOT NULL,
-idConfigurationint int NOT NULL,
+idConfiguration int NOT NULL,
 PRIMARY KEY (idI, idConfiguration));
 
-ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_idC FOREIGN KEY (idC) REFERENCES Commune (idC);
-ALTER TABLE Commune ADD CONSTRAINT FK_Commune_idD FOREIGN KEY (idD) REFERENCES Departement (idD);
+CREATE TABLE Contient (idM int NOT NULL, 
+						idPartie int NOT NULL, 
+						PRIMARY KEY (idM,  idPartie));
+
+ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_nomCommune FOREIGN KEY (nomCommune) REFERENCES Commune (nomCommune);
 ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);
 ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ_ARRIVER FOREIGN KEY (idQ_ARRIVER) REFERENCES Quartiers (idQ);
 ALTER TABLE Partie ADD CONSTRAINT FK_Partie_idConfiguration FOREIGN KEY (idConfiguration) REFERENCES Configuration (idConfiguration);
 ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_idR FOREIGN KEY (idR) REFERENCES Routes (idR);
+ALTER TABLE Geometries ADD CONSTRAINT FK_Geometries_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);
 ALTER TABLE Participe ADD CONSTRAINT FK_Participe_idJ FOREIGN KEY (idJ) REFERENCES Joueuses (idJ);
 ALTER TABLE Participe ADD CONSTRAINT FK_Participe_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
-ALTER TABLE Participe ADD CONSTRAINT FK_Participe_idV FOREIGN KEY (idV) REFERENCES Victoire (idV);
 ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_idI FOREIGN KEY (idI) REFERENCES Image (idI);
 ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_idConfiguration FOREIGN KEY (idConfiguration) REFERENCES Configuration (idConfiguration);
+ALTER TABLE Contient ADD CONSTRAINT FK_Contient_idM FOREIGN KEY (idM) REFERENCES ToursMisterX (idM); 
+ALTER TABLE Contient ADD CONSTRAINT FK_Contient_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
+
+INSERT INTO Commune (departement, nomCommune, cpCommune) 
+SELECT dsq.departement, dsq.nomCommune AS nomCommune, dsq.cpCommune
+FROM   dataset.Quartiers dsq
+GROUP BY dsq.cpCommune;
+
+INSERT INTO Quartiers (idQ, codeInsee, typeQ, nomQ, nomCommune) 
+SELECT dsq.idQ, dsq.codeInsee, dsq.typeQ, dsq.nomQ, dsq.nomCommune
+FROM   dataset.Quartiers dsq;
+
+INSERT INTO Routes (idQ_ARRIVER)
+SELECT idQ 
+FROM dataset.Routes dsr JOIN p1925142.Quartiers pq
+ON dsr.idQuartierArrivee = pq.idQ
+

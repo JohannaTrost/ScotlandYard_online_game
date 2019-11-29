@@ -5,11 +5,11 @@ Quartiers (<u>idQ</u>,
  codeInsee,
  coords,
  typeQ,
- #idC) 
+ #departement) 
 
 Departement (<u>idD</u>) 
 
-Commune (<u>idC</u>,
+Commune (<u>departement</u>,
  nomC,
  cpCommune,
  #idD) 

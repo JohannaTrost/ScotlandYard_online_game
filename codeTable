@@ -8,7 +8,7 @@ nomQ varchar(255),
 codeInsee INT,
 coords varchar(255),
 typeQ varchar(255),
-idC INT NOT NULL,
+departement INT NOT NULL,
 PRIMARY KEY (idQ) );
 
 DROP TABLE IF EXISTS Departement;
@@ -16,11 +16,11 @@ CREATE TABLE Departement (idD int AUTO_INCREMENT NOT NULL,
 PRIMARY KEY (idD) );
 
 DROP TABLE IF EXISTS Commune;
-CREATE TABLE Commune (idC int AUTO_INCREMENT NOT NULL,
+CREATE TABLE Commune (departement int AUTO_INCREMENT NOT NULL,
 nomC varchar(255),
 cpCommune varchar(255),
 idD INT NOT NULL,
-PRIMARY KEY (idC) );
+PRIMARY KEY (departement) );
 
 DROP TABLE IF EXISTS Routes;
 CREATE TABLE Routes (idR int AUTO_INCREMENT NOT NULL,
@@ -71,7 +71,7 @@ idConfiguration INT NOT NULL,
 PRIMARY KEY (idI,
  idConfiguration) );
 
-ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_idC FOREIGN KEY (idC) REFERENCES Commune (idC);
+ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_departement FOREIGN KEY (departement) REFERENCES Commune (departement);
 
 ALTER TABLE Commune ADD CONSTRAINT FK_Commune_idD FOREIGN KEY (idD) REFERENCES Departement (idD);
 ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);

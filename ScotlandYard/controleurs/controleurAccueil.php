@@ -1,3 +1,4 @@
 <?php 
-$connexion = getConnexionBD();
+	$connexion = getConnexionBD();
+	if(isset($_POST['boutonValider'])) {}
 ?>

@@ -1,4 +1,6 @@
 <?php
+// scp -r ScotlandYard p1925142@bdw1.univ-lyon1.fr:~
+// http://bdw1.univ-lyon1.fr/p1925142/ScotlandYard/
 $nomSite = "ScotlandYard";
 $baseline = "Jouer Scotland Yard, trouver mister X";
 

@@ -23,11 +23,14 @@ Page d'accueil
 			<p> 
 				Description du jeu
 			</p>
-			
+			<form method="post" action="index.php?page=jouer-maintenant">
+				<input type=submit name="buttonConfig" value="PLAY">
+			</form>
 		</main>
 	</div>
     <?php include('static/footer.php'); ?>
 </body>
+
 <script src="js/correction.js" varchar(255)set="utf-8"></script>
 <script src="js/messages.js" varchar(255)set="utf-8"></script>
 </html>

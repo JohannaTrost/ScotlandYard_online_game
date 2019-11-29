@@ -8,7 +8,8 @@
 
 $Routes = array(
 	'accueil' => array('controleur' => 'controleurAccueil', 'vue' => 'vueAccueil'),
-	'jouer' => array('controleur' => 'controleurAccueil', 'vue' => 'vueAccueil')
+	'jouer' => array('controleur' => 'controleurAccueil', 'vue' => 'vueAccueil'), 
+	'jouer-maintenant' => array('controleur' => 'controleurConfiguration', 'vue' => 'vueConfiguration')
 );
 
 ?>
