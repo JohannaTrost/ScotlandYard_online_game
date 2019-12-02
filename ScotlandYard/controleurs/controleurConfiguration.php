@@ -21,13 +21,40 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 			$message = "Erreur lors de l'insertion de la joueuse $prenom.";
 		}
 	}
-	$requete = "INSERT INTO Partie (nbDetectives) VALUES ('". $nbDetectives . "')";
+	// ajouter une Configuration
+	$requete = "SELECT max(idConfiguration) AS max FROM Configuration";
+	$lastConfigId = mysqli_query($connexion, $requete);
+	if($lastConfigId==TRUE)
+	{
+		$id = mysqli_fetch_assoc($lastConfigId)['max'] + 1;
+	}
+	else 
+	{
+		$id = 0;
+	}
+	$configNom = "basique" . strval($id) . $prenom;
+	$timeStamp = date("Y-m-d H:i:s");
+	$timeStamp = date("Y-m-d H:i:s",strtotime(str_replace('/','-',$timeStamp))) ;
+	$strategie = "basique";
+	$requete = "INSERT INTO Configuration (nomConfiguration, dateConfiguration, strategieConfiguration) 
+				VALUES ('". $configNom . "', '". $timeStamp . "', '". $strategie . "')";
+	
 	$insertion = mysqli_query($connexion, $requete);
 	if($insertion == TRUE) {
-		$message = "La nombre des detectives $nbDetectives a bien été ajoutée dans la nouveau partie !";
+		$message = "La configuration a bien été ajoutée dans la nouveau partie !";
 	}
 	else {
-		$message = "Erreur lors de l'insertion de la nombre des detectives $nbDetectives.";
+		$message = "Erreur lors de l'insertion de la configuration.";
+	}
+
+	$requete = "INSERT INTO Partie (dateDemarage, nbDetectives, idConfiguration) 
+				VALUES ('". $timeStamp . "', '". $nbDetectives . "', '" . $id . "')";
+	$insertion = mysqli_query($connexion, $requete);
+	if($insertion == TRUE) {
+		$message = "De partie a bien été ajoutée dans la nouveau partie !";
+	}
+	else {
+		$message = "Erreur lors de l'insertion de la partie.";
 	}
 
 }
