@@ -27,7 +27,7 @@ PRIMARY KEY (nomCommune));
 
 CREATE TABLE Routes (idR int AUTO_INCREMENT NOT NULL,
 typeTransport varchar(255),
-idQ int,
+idQ_DEPART int,
 idQ_ARRIVER int,
 PRIMARY KEY (idR));
 
@@ -44,7 +44,7 @@ PRIMARY KEY (idJ));
 
 CREATE TABLE Configuration (idConfiguration int AUTO_INCREMENT NOT NULL,
 nomConfiguration varchar(255),
-dateConfiguratiion date,
+dateConfiguration date,
 strategieConfiguration enum('basique', 'économe', 'pistage'),
 PRIMARY KEY (idConfiguration));
 
@@ -76,7 +76,7 @@ CREATE TABLE Contient (idM int NOT NULL,
 						PRIMARY KEY (idM,  idPartie));
 
 ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_nomCommune FOREIGN KEY (nomCommune) REFERENCES Commune (nomCommune);
-ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);
+ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ_DEPART FOREIGN KEY (idQ_DEPART) REFERENCES Quartiers (idQ);
 ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ_ARRIVER FOREIGN KEY (idQ_ARRIVER) REFERENCES Quartiers (idQ);
 ALTER TABLE Partie ADD CONSTRAINT FK_Partie_idConfiguration FOREIGN KEY (idConfiguration) REFERENCES Configuration (idConfiguration);
 ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_idR FOREIGN KEY (idR) REFERENCES Routes (idR);
@@ -97,8 +97,32 @@ INSERT INTO Quartiers (idQ, codeInsee, typeQ, nomQ, nomCommune)
 SELECT dsq.idQ, dsq.codeInsee, dsq.typeQ, dsq.nomQ, dsq.nomCommune
 FROM   dataset.Quartiers dsq;
 
-INSERT INTO Routes (idQ_ARRIVER)
-SELECT idQ 
-FROM dataset.Routes dsr JOIN p1925142.Quartiers pq
-ON dsr.idQuartierArrivee = pq.idQ
+INSERT INTO Routes (idQ_ARRIVER, typeTransport, idQ_DEPART)
+SELECT idQuartierArrivee, transport, idQuartierDepart 
+FROM dataset.Routes dsr
+
+
+--INSERT INTO Routes (idQ_ARRIVER, typeTransport)
+--SELECT idQ, transport 
+--FROM dataset.Routes dsr JOIN p1925142.Quartiers pq
+--ON dsr.idQuartierArrivee = pq.idQ;
+
+--UPDATE p1925142.Routes
+--SET idQ =(SELECT idQ  
+--FROM dataset.Routes dsr JOIN p1925142.Quartiers pq
+--ON dsr.idQuartierDepart = pq.idQ) -> for each idQ do the update 
+
+
+--ALTER TABLE Routes
+--DROP FOREIGN KEY FK_Routes_idQ;
+--ALTER TABLE Routes 
+--DROP COLUMN idQ;
+--ALTER TABLE Routes ADD COLUMN idQ;
+--ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);
+--INSERT INTO Routes (idQ)
+--SELECT idQ 
+--FROM dataset.Routes dsr JOIN p1925142.Quartiers pq
+--ON dsr.idQuartierDepart = pq.idQ;
+
+
 
