@@ -51,6 +51,7 @@ CREATE TABLE Configuration (idConfiguration int AUTO_INCREMENT NOT NULL,
 nomConfiguration varchar(255),
 dateConfiguration date,
 strategieConfiguration enum('basique', 'économe', 'pistage'),
+ensembleImages varchar(255),
 PRIMARY KEY (idConfiguration));
 
 CREATE TABLE Image (idI int AUTO_INCREMENT NOT NULL,

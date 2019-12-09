@@ -19,12 +19,7 @@ Page d'accueil
 		<?php } ?>
 		
 		<p>Ton quartier de depart: <?= $quartierDetectsDepart[1][0] ?> <br/>
-		    <?php
-		                                                    //foreach($tousQuartiersDepart as &$quartier)
-															//{
-															//	echo $quartier . "<br>";
-															//}
-														   ?>
+		    
 		   Les autres detectives sont dans les quartiers: <br/>
 														  <?php
 		                                                    for($i=1; $i < $numDetects; $i++)
@@ -35,11 +30,13 @@ Page d'accueil
 		</p>
 		<form action="/action_page.php">
 			<p>Choisisez votre destination:</p>
-				<??>
-			  <input type="radio" name="gender" value="male"> Male<br>
-			  <input type="radio" name="gender" value="female"> Female<br>
-			  <input type="radio" name="gender" value="other"> Other<br>  
-			  <input type="submit" value="Soumettre">
+			
+			<?php foreach ($arriveesJoueuse[1] as &$arrivee) {?>
+			
+				<input type="radio" name="arrivee" value=<?=$arrivee?>> <?=$arrivee?><br>
+			  
+			<?php } ?>
+			<input type="submit" value="Soumettre">
 		</form>
 		<main>
 			<!--<form id="config" method="post" action="index.php?page=jouer"> -->

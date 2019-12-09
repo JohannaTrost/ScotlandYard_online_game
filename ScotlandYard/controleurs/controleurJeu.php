@@ -59,11 +59,14 @@ function initDeparts($quartiersDepart, $numDetects)
 	/* get unique depart quartiers for all detectives and for mister X (last one) */
 	$randIndices = array_rand($quartiersDepart[0], $numDetects + 1);
 	$quartierIdsDetectsDepart = array();
-	$quartierDetectsDepart = array();	
-	foreach ($randIndices as &$i)
-	{
-		$quartierIdsDetectsDepart[] = $quartiersDepart[0][$i];
-		$quartierDetectsDepart[] = $quartiersDepart[1][$i];
+	$quartierDetectsDepart = array();
+	if (is_array($randIndices) || is_object($randIndices))
+    {
+		foreach ($randIndices as &$i)
+		{
+			$quartierIdsDetectsDepart[] = $quartiersDepart[0][$i];
+			$quartierDetectsDepart[] = $quartiersDepart[1][$i];
+		}
 	}
 	return array($quartierIdsDetectsDepart, $quartierDetectsDepart);
 }
@@ -87,15 +90,15 @@ function getDestinationsPossibles($idDepart)
 			$destinationTrans[] = $row['typeTransport'];
 		}
 	}
-	return array(destinationIds, destinationNoms, destinationTrans);
+	return array($destinationIds, $destinationNoms, $destinationTrans);
 }
 
 function deplacerMisterX($quartierDetectsDepart, $numDetects)
-{
-	$arriveesMisterX = getDestinationsPossibles(quartierDetectsDepart[0][$numDetects]);
+{ 
+	$arriveesMisterX = getDestinationsPossibles($quartierDetectsDepart[0][$numDetects]);
 	for($i=0; $i < $numDetects-1; $i++)
 	{
-		$pos = array_search(quartierDetectsDepart[0][$i], $arriveesMisterX[0]);
+		$pos = array_search($quartierDetectsDepart[0][$i], $arriveesMisterX[0]);
 		if(!is_null($pos))
 		{
 			foreach ($arriveesMisterX as &$distinPossible)
@@ -104,11 +107,11 @@ function deplacerMisterX($quartierDetectsDepart, $numDetects)
 			}
 		}
 	}
-	if(empty(arriveesMisterX[0])) {  
+	if(empty($arriveesMisterX[0])) {  
 		return null; 
 	} else {
 		$randIndex = array_rand($arriveesMisterX[0], 1);
-		return array(quartierDetectsDepart[0][$numDetects], $arriveesMisterX[0][$randIndex], $arriveesMisterX[1][$randIndex], $arriveesMisterX[2][$randIndex]); 
+		return array($quartierDetectsDepart[0][$numDetects], $arriveesMisterX[0][$randIndex], $arriveesMisterX[1][$randIndex], $arriveesMisterX[2][$randIndex]); 
 	}
 }
 
@@ -117,6 +120,9 @@ $detectsWon = false;
 $numDetects = getNbDetectsDeLaPartie();
 $tousQuartiersDepart = getTousQuartiersDeparts();
 $quartierDetectsDepart = initDeparts($tousQuartiersDepart, $numDetects); 
+
 $routeMisterX = deplacerMisterX($quartierDetectsDepart, $numDetects); 
-if(isnull($routeMisterX)) { $detectsWon = true; }
+if(is_null($routeMisterX)) { $detectsWon = true; }
+$arriveesJoueuse = getDestinationsPossibles($quartierDetectsDepart[0][0])
+
 ?>
