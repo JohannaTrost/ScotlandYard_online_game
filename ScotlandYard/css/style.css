@@ -10,9 +10,10 @@ footer {
 }
 
 header {
-    background-color: #FF9900;
+    background-color: white;
     text-align: center;
     border-radius: 1em;
+	font-style: italic;
 }
 
 header img {

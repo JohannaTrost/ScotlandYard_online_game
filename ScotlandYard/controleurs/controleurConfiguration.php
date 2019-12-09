@@ -1,6 +1,5 @@
 <?php 
 $connexion = getConnexionBD(); // connexion à la BD
-
 if(isset($_POST['boutonValider'])) { // formulaire soumis
 	
 	// recuperation des valeurs saisies

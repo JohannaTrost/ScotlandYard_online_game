@@ -14,6 +14,33 @@ Page d'accueil
 	<?php include('static/header.php'); ?>
     <div id="divCentral">
 		<?php include('static/menu.php'); ?>
+		<?php if(isset($message)) { ?>
+			<p><?= $message ?></p>
+		<?php } ?>
+		
+		<p>Ton quartier de depart: <?= $quartierDetectsDepart[1][0] ?> <br/>
+		    <?php
+		                                                    //foreach($tousQuartiersDepart as &$quartier)
+															//{
+															//	echo $quartier . "<br>";
+															//}
+														   ?>
+		   Les autres detectives sont dans les quartiers: <br/>
+														  <?php
+		                                                    for($i=1; $i < $numDetects; $i++)
+															{
+																echo $quartierDetectsDepart[1][$i] . "<br>";
+															}
+														   ?>
+		</p>
+		<form action="/action_page.php">
+			<p>Choisisez votre destination:</p>
+				<??>
+			  <input type="radio" name="gender" value="male"> Male<br>
+			  <input type="radio" name="gender" value="female"> Female<br>
+			  <input type="radio" name="gender" value="other"> Other<br>  
+			  <input type="submit" value="Soumettre">
+		</form>
 		<main>
 			<!--<form id="config" method="post" action="index.php?page=jouer"> -->
 			<form id="config" method="post" action="#">
