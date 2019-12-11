@@ -59,7 +59,7 @@ nomI varchar(255),
 cheminImage varchar(255),
 PRIMARY KEY (idI));
 
-CREATE TABLE ToursMisterX (nbTours int AUTO_INCREMENT NOT NULL,
+CREATE TABLE ToursMisterX (nbTours int NOT NULL,
 idQ_DEPART int,
 idQ_ARRIVER int,
 typeTransport varchar(255),

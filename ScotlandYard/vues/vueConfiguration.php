@@ -16,6 +16,7 @@ Page d'accueil
 		<?php include('static/menu.php'); ?>
 		<main>
 			<!--<form id="config" method="post" action="index.php?page=jouer"> -->
+			<?php if(!isset($_SESSION)) session_start();?>
 			<form id="config" method="post" action="" >
 				<label for="prenom">Prenom: </label>
 				<input type="text" name="prenom" id="prenom" placeholder="saisir votre nom" required />
@@ -26,7 +27,10 @@ Page d'accueil
 				<input type="submit" id="submit" name="boutonValider" value="OK" disabled />
 				<!--<a href= target="_blank"><i class="fa fa-play-circle fa-2x"></i></a>-->
 			</form>
-			<button id="play"><i class="fa fa-play-circle fa-2x"></i></button>
+			<!--<button id="play"><i class="fa fa-play-circle fa-2x"></i></button>-->
+			<form id="play" method="post" action="" >
+				<input type="submit" id="play" name="boutonPlay"><i class="fa fa-play-circle fa-2x"></input>
+			</form>
 		</main>
 	</div>
 	<?php include('static/footer.php'); ?>

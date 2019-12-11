@@ -14,36 +14,46 @@ Page d'accueil
 	<?php include('static/header.php'); ?>
     <div id="divCentral">
 		<?php include('static/menu.php'); ?>
+		<?php if(!isset($_SESSION)) session_start(); ?>
 		<?php if(isset($message)) { ?>
 			<p><?= $message ?></p>
 		<?php } ?>
 		
-		<p>Ton quartier de depart: <?= $quartierDetectsDepart[1][0] ?> <br/>
+		<p>Ton quartier de depart: <?= $_SESSION['QUARTIERS_DEPART']['noms'][0] ?> <br/>
 		    
 		   Les autres detectives sont dans les quartiers: <br/>
 														  <?php
-		                                                    for($i=1; $i < $numDetects; $i++)
+		                                                    for($i=1; $i < $_SESSION['NUM_DETECTS']; $i++)
 															{
-																echo $quartierDetectsDepart[1][$i] . "<br>";
+																echo $_SESSION['QUARTIERS_DEPART']['noms'][$i] . "<br>";
 															}
 														   ?>
 		</p>
-		<form action="/action_page.php">
-			<p>Choisisez votre destination:</p>
-			
-			<?php foreach ($arriveesJoueuse[1] as &$arrivee) {?>
-			
-				<input type="radio" name="arrivee" value=<?=$arrivee?>> <?=$arrivee?><br>
-			  
-			<?php } ?>
-			<input type="submit" value="Soumettre">
-		</form>
 		<main>
-			<!--<form id="config" method="post" action="index.php?page=jouer"> -->
-			<form id="config" method="post" action="#">
-				<input type="submit" id="submit" name="boutonValider" value="OK" />
-			</form>
-			
+			<form method="post" action="">
+				<p>Choisisez votre destination:</p>
+				
+				<!-- foreach ($arriveesJoueuse[1] as &$arrivee) { -->
+				<?php for ($i=0; $i < sizeof($arriveesJoueuse['noms'])-1; $i++) {?>
+				
+					<input type="radio" name="arrivee" value=<?=$arriveesJoueuse['ids'][$i], str_replace(' ', '&nbsp;', $arriveesJoueuse['noms'][$i])?>> <?=str($arriveesJoueuse['noms'][$i])?> en <?=str($arriveesJoueuse['transports'][$i])?><br>
+				  
+				<?php } ?>
+				<input type="submit" id="submit" name="boutonValider" value="Soumettre">
+			</form>	
+			<p>
+			<?php 
+				  echo $_SESSION['COUNT_TOURS_MISTERX'] . "eme tour de mister X"; 
+				  if($_SESSION['DETECTS_GAGNE'] == true) {
+					echo "Vous avez gagné la partie";
+			      	session_destroy(); 
+			      }
+				  else if($_SESSION['COUNT_TOURS_MISTERX'] == 20) {
+					echo "Mister X a gagné la partie";
+			      	session_destroy(); 
+				  }
+			?>
+			</p>
 		</main>
 	</div>
 	<?php include('static/footer.php'); ?>
