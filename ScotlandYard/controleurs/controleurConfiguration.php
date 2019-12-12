@@ -6,7 +6,7 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	// recuperation des valeurs saisies
 	$prenom = mysqli_real_escape_string($connexion, $_POST['prenom']);
 	$nbDetectives = mysqli_real_escape_string($connexion, $_POST['nbDetects']);
-	
+	$strategie = $_POST['strategie'];
 	// gérér la joueuse
 	$requete = "SELECT * FROM Joueuses WHERE nomJ = ('". $prenom . "')";
 	$verification = mysqli_query($connexion, $requete);
@@ -33,13 +33,12 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	{
 		$id = 0;
 	}
-	$configNom = "basique" . strval($id) . $prenom;
 	$timeStamp = date("Y-m-d H:i:s");
 	$timeStamp = date("Y-m-d H:i:s",strtotime(str_replace('/','-',$timeStamp))) ;
-	$strategie = "basique";
+	$configNom = $strategie . strval($id) . $prenom;
 	$requete = "INSERT INTO Configuration (nomConfiguration, dateConfiguration, strategieConfiguration) 
 				VALUES ('". $configNom . "', '". $timeStamp . "', '". $strategie . "')";
-	
+	}
 	$insertion = mysqli_query($connexion, $requete);
 	if($insertion == TRUE) {
 		$message = "La configuration a bien été ajoutée dans la nouveau partie !";

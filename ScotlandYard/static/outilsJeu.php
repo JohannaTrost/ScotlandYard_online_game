@@ -130,7 +130,10 @@ function deplacerMisterX()
 
 function input2QuartierIdNom($input)
 {
-	if (is_numeric(substr($input, 0, 2))) {
+	if (is_numeric(substr($input, 0, 3))) {
+		return array('id' => (int)substr($input, 0, 3), 'nom' => substr($input, 3)); 	
+	}
+	else if (is_numeric(substr($input, 0, 2))) {
 		return array('id' => (int)substr($input, 0, 2), 'nom' => substr($input, 2)); 	
 	}
 	else 
@@ -148,7 +151,7 @@ function deplacerDetectives()
 	echo 'numer of detectives: ' . $_SESSION['NUM_DETECTS']; 
 	echo nl2br(" \n ");
 	// déplace chaque détective sauf la joueuse 
-	for($i=1; $i < $_SESSION['NUM_DETECTS']-1; $i++)
+	for($i=1; $i < $_SESSION['NUM_DETECTS']; $i++)
 	{
 		echo nl2br('detective ' . $i . ': \n'); 
 		$arriveesPossibles = getDestinationsPossibles($_SESSION['QUARTIERS_DEPART']['ids'][$i]); // funktioniert

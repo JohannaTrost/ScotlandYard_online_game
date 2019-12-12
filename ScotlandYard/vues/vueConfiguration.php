@@ -24,6 +24,15 @@ Page d'accueil
 				<label for="nbDetects">Nombre de détectives: </label>
 				<input type="number" name="nbDetects" id="nbDetects" placeholder="entre 3 et 5" required>
 				<br/><br/>
+				<label for="strategie">STRATEGIE Basique: </label>
+				<input type="radio" name="strategie" value="basique">
+				<br/><br/>
+			    <label for="strategie">STRATEGIE Econome: </label>
+			    <input type="radio" name="strategie" value="econome">
+			    <br/><br/>
+			    <label for="stragie">STRATEGIE Pistage: </label>
+			    <input type="radio" name="strategie" value="pistage">
+			    <br/><br/>
 				<button type="submit" id="submit" name="boutonValider" disabled><i class="fa fa-play-circle fa-4x"></i></button>
 			</form>
 		</main>

@@ -19,6 +19,12 @@ if(isset($_POST['boutonValider'])) {
 	// vérifier si les détectives ont encerclé mister X
 	if(is_null($routeMisterX)) { $_SESSION['DETECTS_GAGNE'] = true; }
 	$arriveesJoueuse = getDestinationsPossibles($_SESSION['QUARTIERS_DEPART']['ids'][0]);
-	echo "arrivee possibles pour joueuse apres bouton cliqué: " . $arriveesJoueuse['noms'][0];  
+	echo "arrivee possibles pour joueuse apres bouton cliqué: " . $arriveesJoueuse['noms'][0];
+	echo $_SESSION['COUNT_TOURS_MISTERX'] . "eme tour de mister X"; 
+	
+	if($_SESSION['DETECTS_GAGNE'] == true || $_SESSION['COUNT_TOURS_MISTERX'] == 20) {
+		// qn a gagné 
+		header("Location: index.php?page=victoire");
+	}
 }
 ?>

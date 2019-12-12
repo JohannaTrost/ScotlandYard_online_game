@@ -41,19 +41,6 @@ Page d'accueil
 				<?php } ?>
 				<input type="submit" id="submit" name="boutonValider" value="Soumettre">
 			</form>	
-			<p>
-			<?php 
-				  echo $_SESSION['COUNT_TOURS_MISTERX'] . "eme tour de mister X"; 
-				  if($_SESSION['DETECTS_GAGNE'] == true) {
-					echo "Vous avez gagné la partie";
-			      	session_destroy(); 
-			      }
-				  else if($_SESSION['COUNT_TOURS_MISTERX'] == 20) {
-					echo "Mister X a gagné la partie";
-			      	session_destroy(); 
-				  }
-			?>
-			</p>
 		</main>
 	</div>
 	<?php include('static/footer.php'); ?>

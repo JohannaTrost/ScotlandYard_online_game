@@ -73,7 +73,7 @@ CREATE TABLE Geometries (latitude int NOT NULL,
 
 CREATE TABLE Participe (idPartie int NOT NULL,
 nomJ varchar(255),
-victoire_PARTICIPE int,
+victoire_PARTICIPE varchar(255),
 PRIMARY KEY (idPartie));
 
 CREATE TABLE Inclus (idI int AUTO_INCREMENT NOT NULL,

@@ -10,7 +10,9 @@ $Routes = array(
 	'accueil' => array('controleur' => 'controleurAccueil', 'vue' => 'vueAccueil'),
 	'jouer' => array('controleur' => 'controleurJeu', 'vue' => 'vueJeu'), 
 	'jouer-maintenant' => array('controleur' => 'controleurConfiguration', 'vue' => 'vueConfiguration'),
-	'statistiques' => array('controleur' => 'controleurStatistiques', 'vue' => 'vueStatistiques')
+	'statistiques' => array('controleur' => 'controleurStatistiques', 'vue' => 'vueStatistiques'), 
+	'afficher' => array('controleur' => 'controleurAfficher', 'vue' => 'vueAfficher'),
+	'victoire' => array('controleur' => 'controleurVictoire', 'vue' => 'vueVictoire')
 );
 
 ?>
