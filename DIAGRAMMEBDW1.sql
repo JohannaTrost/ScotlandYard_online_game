@@ -59,29 +59,26 @@ nomI varchar(255),
 cheminImage varchar(255),
 PRIMARY KEY (idI));
 
-CREATE TABLE ToursMisterX (nbTours int NOT NULL,
+CREATE TABLE ToursMisterX (idPartie int NOT NULL,
+nbTours int, 
 idQ_DEPART int,
 idQ_ARRIVER int,
 typeTransport varchar(255),
-PRIMARY KEY (nbTours));
+PRIMARY KEY (idPartie, nbTours));
 
 CREATE TABLE Geometries (latitude int NOT NULL,
 						 longitude int, 
 						 idQ int, 
 						 PRIMARY KEY (latitude, longitude));
 
-CREATE TABLE Participe (idJ int NOT NULL,
-idPartie int NOT NULL,
+CREATE TABLE Participe (idPartie int NOT NULL,
+nomJ varchar(255),
 victoire_PARTICIPE int,
-PRIMARY KEY (idJ, idPartie));
+PRIMARY KEY (idPartie));
 
 CREATE TABLE Inclus (idI int AUTO_INCREMENT NOT NULL,
 idConfiguration int NOT NULL,
 PRIMARY KEY (idI, idConfiguration));
-
-CREATE TABLE Contient (nbTours int NOT NULL, 
-						idPartie int NOT NULL, 
-						PRIMARY KEY (nbTours,  idPartie));
 
 ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_nomCommune FOREIGN KEY (nomCommune) REFERENCES Commune (nomCommune);
 ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ_DEPART FOREIGN KEY (idQ_DEPART) REFERENCES Quartiers (idQ);
@@ -91,13 +88,11 @@ ALTER TABLE Partie ADD CONSTRAINT FK_Partie_idConfiguration FOREIGN KEY (idConfi
 ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_idQ_ARRIVER FOREIGN KEY (idQ_ARRIVER) REFERENCES Routes (idQ_ARRIVER);
 ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_idQ_DEPART FOREIGN KEY (idQ_DEPART) REFERENCES Routes (idQ_DEPART);
 ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_typeTransport FOREIGN KEY (typeTransport) REFERENCES Transport (typeTransport);
+ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
 ALTER TABLE Geometries ADD CONSTRAINT FK_Geometries_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);
-ALTER TABLE Participe ADD CONSTRAINT FK_Participe_idJ FOREIGN KEY (idJ) REFERENCES Joueuses (idJ);
 ALTER TABLE Participe ADD CONSTRAINT FK_Participe_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
 ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_idI FOREIGN KEY (idI) REFERENCES Image (idI);
 ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_idConfiguration FOREIGN KEY (idConfiguration) REFERENCES Configuration (idConfiguration);
-ALTER TABLE Contient ADD CONSTRAINT FK_Contient_nbTours FOREIGN KEY (nbTours) REFERENCES ToursMisterX (nbTours); 
-ALTER TABLE Contient ADD CONSTRAINT FK_Contient_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
 
 INSERT INTO Commune (departement, nomCommune, cpCommune) 
 SELECT dsq.departement, dsq.nomCommune AS nomCommune, dsq.cpCommune

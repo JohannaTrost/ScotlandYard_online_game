@@ -24,12 +24,7 @@ Page d'accueil
 				<label for="nbDetects">Nombre de détectives: </label>
 				<input type="number" name="nbDetects" id="nbDetects" placeholder="entre 3 et 5" required>
 				<br/><br/>
-				<input type="submit" id="submit" name="boutonValider" value="OK" disabled />
-				<!--<a href= target="_blank"><i class="fa fa-play-circle fa-2x"></i></a>-->
-			</form>
-			<!--<button id="play"><i class="fa fa-play-circle fa-2x"></i></button>-->
-			<form id="play" method="post" action="" >
-				<input type="submit" id="play" name="boutonPlay"><i class="fa fa-play-circle fa-2x"></input>
+				<button type="submit" id="submit" name="boutonValider" disabled><i class="fa fa-play-circle fa-4x"></i></button>
 			</form>
 		</main>
 	</div>
@@ -39,11 +34,11 @@ Page d'accueil
 	const configForm = document.getElementById('config');
 	const nbDetectsField = document.getElementById('nbDetects');
 	const submit = document.getElementById('submit');  
-	const playButton = document.getElementById('play');
+	const prenomField = document.getElementById('prenom');
 	
-	nbDetectsField.addEventListener('keyup', function (event) 
+	nbDetectsField.addEventListener('input', function (event) 
 	{  
-	  if ( nbDetectsField.value >= 3 && nbDetectsField.value <= 5 ) 
+	  if ( nbDetectsField.value >= 3 && nbDetectsField.value <= 5 && prenomField.value.length > 0) 
 	  {
 		submit.disabled = false;
 	  } 
@@ -52,14 +47,23 @@ Page d'accueil
 		submit.disabled = true;
 	  }
 	});
-	  
+	
+	prenomField.addEventListener('input', function (event) 
+	{  
+	  if ( nbDetectsField.value >= 3 && nbDetectsField.value <= 5 && prenomField.value.length > 0) 
+	  {
+		submit.disabled = false;
+	  } 
+	  else 
+	  {
+		submit.disabled = true;
+	  }
+	});
+	
 	submit.addEventListener('click', function (event) {
 	  configForm.submit();
 	});
 
-	playButton.addEventListener('click', function() { 
-	  document.location.href = 'https://bdw1.univ-lyon1.fr/p1925142/ScotlandYard/index.php?page=jouer';
-	});
 </script>
 <script src="js/correction.js" varchar(255)set="utf-8"></script>
 <script src="js/messages.js" varchar(255)set="utf-8"></script>

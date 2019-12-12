@@ -112,8 +112,10 @@ function deplacerMisterX()
 	} else {
 		$randIndex = array_rand($arriveesMisterX['ids'], 1);
 		$_SESSION['COUNT_TOURS_MISTERX'] += 1;
+		$partieId = mysqli_fetch_assoc(mysqli_query($GLOBALS['connexion'], "SELECT max(idPartie) AS max FROM Partie"))['max'];
 		$requete = "INSERT INTO ToursMisterX
-					VALUES('" . $_SESSION['COUNT_TOURS_MISTERX'] . "',
+					VALUES('" . $partieId . "',
+						   '" . $_SESSION['COUNT_TOURS_MISTERX'] . "',
 						   '" . $_SESSION['QUARTIERS_DEPART']['ids'][$_SESSION['NUM_DETECTS']] . "',
                			   '" . $arriveesMisterX['ids'][$randIndex] . "',
 						   '" . $arriveesMisterX['transports'][$randIndex] . "')"; 
