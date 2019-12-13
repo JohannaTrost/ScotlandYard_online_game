@@ -3,6 +3,10 @@ if(!isset($_SESSION)) session_start();
 $connexion = getConnexionBD(); // connexion à la BD
 $message = "";
 
+//-----------------------------------------------------
+// Fonctions pour l'init d'une session/ partie
+//-----------------------------------------------------
+
 function getTousQuartiersDeparts()
 {
 	$departIds = array();
@@ -23,54 +27,28 @@ function getTousQuartiersDeparts()
 	$departNoms = array_unique($departNoms);
 	return array('ids' => $departIds, 'noms' => $departNoms);
 }
-/*
-function idPasDansArray($id, $arr)
-{
-	foreach ($arr as &$quartier)
-	{
-		if($quartier[0] == $id)
-		{
-			return false; 
-		}	
-	}
-	return true;
-}
-*/
-function getNbDetectsDeLaPartie()
-{
-	$requete = "SELECT nbDetectives 
-				FROM Partie 
-				WHERE idPartie = (SELECT max(idPartie) AS max 
-								  FROM Partie)";
-	$resultat = mysqli_query($GLOBALS['connexion'], $requete);
-	if($resultat==TRUE)
-	{
-		$numDetects = mysqli_fetch_assoc($resultat)['nbDetectives'];
-		echo $numDetects;
-	}
-	else 
-	{
-		$message = "Erreur lors de recherche de la partie et le numéro des détectives en cours.";
-	}
-	return $numDetects;
-}
 
 function initDeparts()
 {
 	/* get unique depart quartiers for all detectives and for mister X (last one) */
-	$randIndices = array_rand($_SESSION['TOUS_QUARTIERS_DEPART']['ids'], $_SESSION['NUM_DETECTS'] + 1);
+	$tousQuartiersDepart = getTousQuartiersDeparts(); 
+	$randIndices = array_rand($tousQuartiersDepart['ids'], $_SESSION['NUM_DETECTS'] + 1);
 	$quartierIdsDetectsDepart = array();
 	$quartierDetectsDepart = array();
 	if (is_array($randIndices) || is_object($randIndices))
     {
 		foreach ($randIndices as &$i)
 		{
-			$quartierIdsDetectsDepart[] = $_SESSION['TOUS_QUARTIERS_DEPART']['ids'][$i];
-			$quartierDetectsDepart[] = $_SESSION['TOUS_QUARTIERS_DEPART']['noms'][$i];
+			$quartierIdsDetectsDepart[] = $tousQuartiersDepart['ids'][$i];
+			$quartierDetectsDepart[] = $tousQuartiersDepart['noms'][$i];
 		}
 	}
-	return array('ids' => $quartierIdsDetectsDepart, 'noms' => $quartierDetectsDepart);
+	return array('ids' => $quartierIdsDetectsDepart, 'noms' => $quartierDetectsDepart, 'transports' => array());
 }
+
+//-----------------------------------------------------
+// Fonctions pour la stratégie basique
+//-----------------------------------------------------
 
 function getDestinationsPossibles($idDepart)
 {
@@ -128,24 +106,7 @@ function deplacerMisterX()
 	}
 }
 
-function input2QuartierIdNom($input)
-{
-	if (is_numeric(substr($input, 0, 3))) {
-		return array('id' => (int)substr($input, 0, 3), 'nom' => substr($input, 3)); 	
-	}
-	else if (is_numeric(substr($input, 0, 2))) {
-		return array('id' => (int)substr($input, 0, 2), 'nom' => substr($input, 2)); 	
-	}
-	else 
-	{
-		return array('id' => (int)substr($input, 0, 1), 'nom' => substr($input, 1)); 
-	}
-}
 
-function str($input)
-{
-	return str_replace(' ', '&nbsp;', $input); 
-}
 function deplacerDetectives()
 {
 	echo 'numer of detectives: ' . $_SESSION['NUM_DETECTS']; 
@@ -199,5 +160,32 @@ function deplacerDetectives()
 		}
 	}
 }
+//-----------------------------------------------------
+// Fonctions pour la stratégie pistage
+//-----------------------------------------------------
 
+//-----------------------------------------------------
+// Fonctions d'aide
+//-----------------------------------------------------
+
+function str($input)
+{
+	return str_replace(' ', '&nbsp;', $input); 
+}
+
+function input2QuartierIdNom($input)
+{
+	if (is_numeric(substr($input, 0, 3))) 
+	{
+		return array('id' => (int)substr($input, 0, 3), 'nom' => substr($input, 3)); 	
+	}
+	else if (is_numeric(substr($input, 0, 2))) 
+	{
+		return array('id' => (int)substr($input, 0, 2), 'nom' => substr($input, 2)); 	
+	}
+	else 
+	{
+		return array('id' => (int)substr($input, 0, 1), 'nom' => substr($input, 1)); 
+	}
+}
 ?>

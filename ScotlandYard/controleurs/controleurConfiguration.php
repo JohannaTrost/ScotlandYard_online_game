@@ -1,12 +1,23 @@
 <?php 
 include('static/outilsJeu.php');
 $connexion = getConnexionBD(); // connexion à la BD
+$message = "";
 if(isset($_POST['boutonValider'])) { // formulaire soumis
 	
 	// recuperation des valeurs saisies
 	$prenom = mysqli_real_escape_string($connexion, $_POST['prenom']);
 	$nbDetectives = mysqli_real_escape_string($connexion, $_POST['nbDetects']);
-	$strategie = $_POST['strategie'];
+	if(isset($_POST['strategie']))
+	{
+		$strategie = $_POST['strategie'];
+	}
+	else 
+	{
+		// choix aléatoirement de stratégie si la joueuse n'a pas fait un choix 
+		$strategies = array("basique", "econome", "pistage"); 
+		$strategie = $strategies[array_rand($strategies)];
+	}
+	
 	// gérér la joueuse
 	$requete = "SELECT * FROM Joueuses WHERE nomJ = ('". $prenom . "')";
 	$verification = mysqli_query($connexion, $requete);
@@ -38,7 +49,6 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	$configNom = $strategie . strval($id) . $prenom;
 	$requete = "INSERT INTO Configuration (nomConfiguration, dateConfiguration, strategieConfiguration) 
 				VALUES ('". $configNom . "', '". $timeStamp . "', '". $strategie . "')";
-	}
 	$insertion = mysqli_query($connexion, $requete);
 	if($insertion == TRUE) {
 		$message = "La configuration a bien été ajoutée dans la nouveau partie !";
@@ -79,9 +89,9 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	if(!isset($_SESSION)) session_start();
 	$_SESSION['DETECTS_GAGNE'] = false; 
 	$_SESSION['COUNT_TOURS_MISTERX'] = 0; 
-    $_SESSION['NUM_DETECTS'] = getNbDetectsDeLaPartie();
-    $_SESSION['TOUS_QUARTIERS_DEPART'] = getTousQuartiersDeparts();
-	$_SESSION['QUARTIERS_DEPART'] = initDeparts(); // 2D array dans [[idQuartiers][nomsQuartiers]]
+    $_SESSION['NUM_DETECTS'] = $nbDetectives;
+	$_SESSION['STRATEGIE'] = $strategie; 
+	$_SESSION['QUARTIERS_DEPART'] = initDeparts(); // 3D array: [[idQuartiers][nomsQuartiers][typesTransport]]
 	
 	// aller sur la page de jeu 
 	if(isset($_SESSION['QUARTIERS_DEPART']) && !empty($_SESSION['QUARTIERS_DEPART']))

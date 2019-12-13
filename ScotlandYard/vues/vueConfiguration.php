@@ -14,6 +14,9 @@ Page d'accueil
 	<?php include('static/header.php'); ?>
     <div id="divCentral">
 		<?php include('static/menu.php'); ?>
+		<?php if(isset($message)) { ?>
+			<p><?= $message ?></p>
+		<?php } ?>
 		<main>
 			<!--<form id="config" method="post" action="index.php?page=jouer"> -->
 			<?php if(!isset($_SESSION)) session_start();?>

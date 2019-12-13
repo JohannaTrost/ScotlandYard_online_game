@@ -18,18 +18,25 @@ Page d'accueil
 		<?php if(isset($message)) { ?>
 			<p><?= $message ?></p>
 		<?php } ?>
-		
-		<p>Ton quartier de depart: <?= $_SESSION['QUARTIERS_DEPART']['noms'][0] ?> <br/>
-		    
-		   Les autres detectives sont dans les quartiers: <br/>
-														  <?php
-		                                                    for($i=1; $i < $_SESSION['NUM_DETECTS']; $i++)
-															{
-																echo $_SESSION['QUARTIERS_DEPART']['noms'][$i] . "<br>";
-															}
-														   ?>
-		</p>
 		<main>
+			<p>Ton quartier de depart: <?= $_SESSION['QUARTIERS_DEPART']['noms'][0] ?> <br/>
+				
+			   Les autres detectives sont dans les quartiers: <br/>
+															  <?php
+																for($i=1; $i < $_SESSION['NUM_DETECTS']; $i++)
+																{
+																	echo $_SESSION['QUARTIERS_DEPART']['noms'][$i] . "<br>";
+																}
+															   ?>
+			</p>
+			<p>
+				<?php 
+				// affiche position de mister X si on est dans la tour 3, 8, 13 ou 18 
+				if($_SESSION['STRATEGIE'] == "pistage" && in_array($_SESSION['COUNT_TOURS_MISTERX'], array(3, 8, 13, 18)))
+				{ ?>
+					Mister X se trouve dans le quartier	<?= $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] ?> <br/>
+				<?php } ?>
+			</p>
 			<form method="post" action="">
 				<p>Choisisez votre destination:</p>
 				
