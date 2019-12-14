@@ -20,7 +20,7 @@ Page d'accueil
 			<p><?= $message ?></p>
 		<?php } ?>
 		<main>
-			<?php // include('dataMigration.php')?>
+			<?php //include('dataMigration.php')?>
 			<div class="to-delete" style="background-color: yellow;">Pour un peu d'aide et des encouragements, vous devriez ouvrir la console web de votre navigateur.</div>
 			
 			<div class="to-delete">Une page quasi vide et non MVC. Il y a du boulot pour donner envie de visiter le site !</div>

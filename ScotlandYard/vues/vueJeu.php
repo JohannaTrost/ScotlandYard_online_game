@@ -32,10 +32,19 @@ Page d'accueil
 			<p>
 				<?php 
 				// affiche position de mister X si on est dans la tour 3, 8, 13 ou 18 
-				if($_SESSION['STRATEGIE'] == "pistage" && in_array($_SESSION['COUNT_TOURS_MISTERX'], array(3, 8, 13, 18)))
-				{ ?>
-					Mister X se trouve dans le quartier	<?= $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] ?> <br/>
-				<?php } ?>
+				if($_SESSION['STRATEGIE'] == "pistage" && $_SESSION['COUNT_TOURS_MISTERX'] > 0)
+				{ 
+					if(in_array($_SESSION['COUNT_TOURS_MISTERX'], array(3, 8, 13, 18, 20)) || $_SESSION['DETECTS_GAGNE'] == true)
+					{?>
+						Mister X se trouve dans le quartier	<?= $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] ?> <br/>
+			  <?php } ?>
+					Le meilleur chemin pour trouver Mister x est ... <br/>
+			  <?php for($i=0; $i < sizeof($plusCourtChemin)-1; $i++)
+					{?>
+						<?= $plusCourtChemin[$i]['nom'] ?> -> <br/>
+			  <?php } ?>
+					Mister X <br/>
+		  <?php } ?>
 			</p>
 			<form method="post" action="">
 				<p>Choisisez votre destination:</p>

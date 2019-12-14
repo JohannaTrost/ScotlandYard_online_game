@@ -36,7 +36,7 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	// ajouter une Configuration
 	$requete = "SELECT max(idConfiguration) AS max FROM Configuration";
 	$lastConfigId = mysqli_query($connexion, $requete);
-	if($lastConfigId==TRUE)
+	if($lastConfigId)
 	{
 		$id = mysqli_fetch_assoc($lastConfigId)['max'] + 1;
 	}
