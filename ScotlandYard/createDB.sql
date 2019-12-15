@@ -51,7 +51,6 @@ CREATE TABLE Configuration (idConfiguration int AUTO_INCREMENT NOT NULL,
 nomConfiguration varchar(255),
 dateConfiguration date,
 strategieConfiguration enum('basique', 'économe', 'pistage'),
-ensembleImages varchar(255),
 PRIMARY KEY (idConfiguration));
 
 CREATE TABLE Image (idI int AUTO_INCREMENT NOT NULL,
@@ -76,9 +75,9 @@ nomJ varchar(255),
 victoire_PARTICIPE varchar(255),
 PRIMARY KEY (idPartie));
 
-CREATE TABLE Inclus (idI int AUTO_INCREMENT NOT NULL,
+CREATE TABLE Inclus (nomI varchar(255),
 idConfiguration int NOT NULL,
-PRIMARY KEY (idI, idConfiguration));
+PRIMARY KEY (nomI, idConfiguration));
 
 ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_nomCommune FOREIGN KEY (nomCommune) REFERENCES Commune (nomCommune);
 ALTER TABLE Routes ADD CONSTRAINT FK_Routes_idQ_DEPART FOREIGN KEY (idQ_DEPART) REFERENCES Quartiers (idQ);
@@ -91,7 +90,7 @@ ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_typeTransport FOREIGN KE
 ALTER TABLE ToursMisterX ADD CONSTRAINT FK_ToursMisterX_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
 ALTER TABLE Geometries ADD CONSTRAINT FK_Geometries_idQ FOREIGN KEY (idQ) REFERENCES Quartiers (idQ);
 ALTER TABLE Participe ADD CONSTRAINT FK_Participe_idPartie FOREIGN KEY (idPartie) REFERENCES Partie (idPartie);
-ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_idI FOREIGN KEY (idI) REFERENCES Image (idI);
+ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_nomI FOREIGN KEY (nomI) REFERENCES Image (nomI);
 ALTER TABLE Inclus ADD CONSTRAINT FK_Inclus_idConfiguration FOREIGN KEY (idConfiguration) REFERENCES Configuration (idConfiguration);
 
 INSERT INTO Commune (departement, nomCommune, cpCommune) 
@@ -109,6 +108,9 @@ FROM dataset.Routes;
 
 INSERT INTO Routes (idQ_DEPART, typeTransport, idQ_ARRIVER)
 SELECT idQuartierDepart, transport, idQuartierArrivee
-FROM dataset.Routes
+FROM dataset.Routes;
 
-INSERT INTO Image VALUES ("ticket taxi", "")
+INSERT INTO Image (nomI, cheminImage) VALUES ("ticket taxi", "img/pion_taxi.jpg");
+INSERT INTO Image (nomI, cheminImage) VALUES ("ticket bus", "img/pion_bus.jpg");
+INSERT INTO Image (nomI, cheminImage) VALUES ("ticket metro", "img/pion_under.jpg");
+INSERT INTO Image (nomI, cheminImage) VALUES ("ticket noir", "img/pion_black.jpg");

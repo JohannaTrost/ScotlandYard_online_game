@@ -73,10 +73,7 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	$requete = "INSERT INTO Participe (nomJ, idPartie) 
 				VALUES ('". $prenom . "', '". $partieId . "')";
 	$insertion = mysqli_query($connexion, $requete);
-	if($insertion == TRUE) {
-		$message = "Table participe a bien été peuplé!";
-	}
-	else {
+	if($insertion == FALSE) {
 		$message = "Erreur lors de l'insertion des valeurs dans table participe.";
 	}
 	
@@ -94,7 +91,9 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	$_SESSION['QUARTIERS_DEPART'] = initDeparts(); // 3D array: [[idQuartiers][nomsQuartiers][typesTransport]]
 	
 	// aller sur la page de jeu 
-	if(isset($_SESSION['QUARTIERS_DEPART']) && !empty($_SESSION['QUARTIERS_DEPART']))
+	if(isset($_SESSION['QUARTIERS_DEPART']) && !empty($_SESSION['QUARTIERS_DEPART']) &&
+	   isset($_SESSION['STRATEGIE']) && !empty($_SESSION['STRATEGIE']) &&
+	   isset($_SESSION['NUM_DETECTS']) && !empty($_SESSION['NUM_DETECTS']))
 	{
 		header("Location: index.php?page=jouer");
 	}

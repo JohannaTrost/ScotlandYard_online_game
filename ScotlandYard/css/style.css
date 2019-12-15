@@ -99,6 +99,7 @@ main p {
 	font-style: sans-serif;
 	font-variant: small-caps;
 	letter-spacing: .1em;
+	color: #0b0b18; 
 	text-align: justify;
 	border-left: 3px solid;
 	border-left-color: #20233f; 

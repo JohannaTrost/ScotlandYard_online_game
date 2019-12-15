@@ -32,14 +32,14 @@ Page d'accueil
 			<p>
 				<?php 
 				// affiche position de mister X si on est dans la tour 3, 8, 13 ou 18 
-				if($_SESSION['STRATEGIE'] == "pistage" && $_SESSION['COUNT_TOURS_MISTERX'] > 0)
+				if($_SESSION['STRATEGIE'] == "pistage")
 				{ 
 					if(in_array($_SESSION['COUNT_TOURS_MISTERX'], array(3, 8, 13, 18, 20)) || $_SESSION['DETECTS_GAGNE'] == true)
 					{?>
 						Mister X se trouve dans le quartier	<?= $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] ?> <br/>
 			  <?php } ?>
 					Le meilleur chemin pour trouver Mister x est ... <br/>
-			        <?php = $plusCourtChemin[1]['nom'] ?> <br/>
+			        <?=$plusCourtChemin[1]['nom'] ?> <br/>
 
 		  <?php } ?>
 			</p>
@@ -47,7 +47,7 @@ Page d'accueil
 				<p>Choisisez votre destination:</p>
 				
 				<!-- foreach ($arriveesJoueuse[1] as &$arrivee) { -->
-				<?php for ($i=0; $i < sizeof($arriveesJoueuse['noms'])-1; $i++) {?>
+				<?php for ($i=0; $i < sizeof($arriveesJoueuse['noms']); $i++) {?>
 				
 					<input type="radio" name="arrivee" value=<?=$arriveesJoueuse['ids'][$i], str_replace(' ', '&nbsp;', $arriveesJoueuse['noms'][$i])?>> <?=str($arriveesJoueuse['noms'][$i])?> en <?=str($arriveesJoueuse['transports'][$i])?><br>
 				  

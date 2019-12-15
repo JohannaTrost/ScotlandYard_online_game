@@ -22,11 +22,14 @@ Page d'accueil
 		
 			<?php if($_SESSION['DETECTS_GAGNE'] == true) { ?>
 				<p>
-					Vous avez gagné !!!
+					Vous avez gagné !!! </br>
+					Vous avez attrapé Mister X dans le quartier <?=$_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']]?>
 				</p>
 			<?php } else if ($_SESSION['COUNT_TOURS_MISTERX'] == 20) { ?>	
 				<p>
-					Mister X a gagné la partie
+					Mister X a gagné la partie.
+					</br>
+					Il était dans le quartier <?=$_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']]?>
 				</p>
 			<?php } ?>
 			
