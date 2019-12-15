@@ -77,6 +77,22 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 		$message = "Erreur lors de l'insertion des valeurs dans table participe.";
 	}
 	
+	// peupler table inclus
+	$resultat = mysqli_query($connexion, "SELECT nomI FROM Image"); 
+	$configId = mysqli_fetch_assoc(mysqli_query($connexion, "SELECT max(idConfiguration) AS max FROM Configuration"))['max'];
+	$images = array(); 
+	if($resultat)
+	{
+			while($row = mysqli_fetch_assoc($resultat))
+			{
+				$images[] = $row['nomI'];
+			}
+	}
+	foreach($images as &$image)
+	{
+		$requete = "INSERT INTO Inclus VALUES('". $configId . "', '". $image . "')"; 
+	}
+	
 	// demarre session pour la nouvelle partie 
 	if(isset($_SESSION['COUNT_TOURS_MISTERX']) && !empty($_SESSION['COUNT_TOURS_MISTERX']))
 	{
@@ -89,7 +105,14 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
     $_SESSION['NUM_DETECTS'] = $nbDetectives;
 	$_SESSION['STRATEGIE'] = $strategie; 
 	$_SESSION['QUARTIERS_DEPART'] = initDeparts(); // 3D array: [[idQuartiers][nomsQuartiers][typesTransport]]
-	
+	if($strategie == "econome")
+	{
+		$_SESSION['TICKETS'] = array(); 
+		foreach($nbDetectives as &$detective)
+		{
+			$_SESSION['TICKETS'][] = array('taxi' => 10, 'bus' => 8, 'metro' => 4); 
+		}
+	}
 	// aller sur la page de jeu 
 	if(isset($_SESSION['QUARTIERS_DEPART']) && !empty($_SESSION['QUARTIERS_DEPART']) &&
 	   isset($_SESSION['STRATEGIE']) && !empty($_SESSION['STRATEGIE']) &&

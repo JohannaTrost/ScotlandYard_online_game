@@ -53,10 +53,10 @@ dateConfiguration date,
 strategieConfiguration enum('basique', 'économe', 'pistage'),
 PRIMARY KEY (idConfiguration));
 
-CREATE TABLE Image (idI int AUTO_INCREMENT NOT NULL,
+CREATE TABLE Image (
 nomI varchar(255),
 cheminImage varchar(255),
-PRIMARY KEY (idI));
+PRIMARY KEY (nomI));
 
 CREATE TABLE ToursMisterX (idPartie int NOT NULL,
 nbTours int, 
@@ -75,8 +75,8 @@ nomJ varchar(255),
 victoire_PARTICIPE varchar(255),
 PRIMARY KEY (idPartie));
 
-CREATE TABLE Inclus (nomI varchar(255),
-idConfiguration int NOT NULL,
+CREATE TABLE Inclus (idConfiguration int NOT NULL,
+nomI varchar(255),
 PRIMARY KEY (nomI, idConfiguration));
 
 ALTER TABLE Quartiers ADD CONSTRAINT FK_Quartiers_nomCommune FOREIGN KEY (nomCommune) REFERENCES Commune (nomCommune);

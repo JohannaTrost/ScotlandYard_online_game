@@ -20,7 +20,7 @@ Page d'accueil
 			<p><?= $message ?></p>
 		<?php } ?>
 		<main>
-			<?php //include('dataMigration.php')?>
+			<?php include('dataMigration.php')?>
 
 			<p> <img src="img/mapLyon3.jpg">
 				Attrapez le gangster Mister X ! </br> Un gangster est en liberté à Lyon. 
