@@ -12,8 +12,8 @@ Page d'accueil
 </head>
 <body>
 	<?php include('static/header.php'); ?>
+	<?php include('static/menu.php'); ?>
     <div id="divCentral">
-		<?php include('static/menu.php'); ?>
 		<?php if(!isset($_SESSION)) session_start(); ?>
 		<?php if(isset($message)) { ?>
 			<p><?= $message ?></p>
@@ -39,11 +39,8 @@ Page d'accueil
 						Mister X se trouve dans le quartier	<?= $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] ?> <br/>
 			  <?php } ?>
 					Le meilleur chemin pour trouver Mister x est ... <br/>
-			  <?php for($i=0; $i < sizeof($plusCourtChemin)-1; $i++)
-					{?>
-						<?= $plusCourtChemin[$i]['nom'] ?> -> <br/>
-			  <?php } ?>
-					Mister X <br/>
+			        <?php = $plusCourtChemin[1]['nom'] ?> <br/>
+
 		  <?php } ?>
 			</p>
 			<form method="post" action="">

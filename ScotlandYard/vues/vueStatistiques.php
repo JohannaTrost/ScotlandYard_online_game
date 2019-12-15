@@ -9,8 +9,8 @@
 </head>
 <body>
 	<?php include('static/header.php'); ?>
+	<?php include('static/menu.php'); ?>
 	<div>
-		<?php include('static/menu.php'); ?>
 		<?php if(isset($message)) { ?>
 			<p><?= $message ?></p>
 		<?php } ?>

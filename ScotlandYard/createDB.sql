@@ -110,3 +110,5 @@ FROM dataset.Routes;
 INSERT INTO Routes (idQ_DEPART, typeTransport, idQ_ARRIVER)
 SELECT idQuartierDepart, transport, idQuartierArrivee
 FROM dataset.Routes
+
+INSERT INTO Image VALUES ("ticket taxi", "")

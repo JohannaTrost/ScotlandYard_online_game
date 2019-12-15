@@ -14,21 +14,24 @@ Page d'accueil
 </head>
 <body>
     <?php include('static/header.php'); ?>
+	<?php include('static/menu.php'); ?>
     <div id="divCentral">
-		<?php include('static/menu.php'); ?>
 		<?php if(isset($message)) { ?>
 			<p><?= $message ?></p>
 		<?php } ?>
 		<main>
 			<?php //include('dataMigration.php')?>
-			<div class="to-delete" style="background-color: yellow;">Pour un peu d'aide et des encouragements, vous devriez ouvrir la console web de votre navigateur.</div>
-			
-			<div class="to-delete">Une page quasi vide et non MVC. Il y a du boulot pour donner envie de visiter le site !</div>
-			<p> 
-				Description du jeu
+
+			<p> <img src="img/mapLyon3.jpg">
+				Attrapez le gangster Mister X ! </br> Un gangster est en liberté à Lyon. 
+				Vous pouvez être l'inspecteur qui l'attrape. Avec 2 à 4 autres détectives, vous pouvez partir à la recherche et suivre Mister X à Lyon. 
+				Vous serez répartis dans différentes parties de la ville et pourrez vous déplacer en bus, en taxi ou en métro. 
+				Heureusement, vos collègues ont pu découvrir quels moyens de transport Mister X utilise, mais malheureusement il n'y a pas encore 
+				d'autres indices, n'est-ce pas ? </br> Mais faites attention pendant la poursuite au nombre de billets qu'il vous reste.  
+				Commencez la chasse immédiatement et testez différentes stratégies de jeu pour encore plus de plaisir !
 			</p>
 			<form method="post" action="index.php?page=jouer-maintenant">
-				<input type=submit name="buttonConfig" value="PLAY">
+				<input type=submit id="playnow" name="buttonConfig" value="PLAY">
 			</form>
 		</main>
 	</div>
