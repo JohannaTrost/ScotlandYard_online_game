@@ -39,9 +39,12 @@ Page d'accueil
 						Mister X se trouve dans le quartier	<?= $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] ?> <br/>
 			  <?php } ?>
 					Le meilleur chemin pour trouver Mister x est ... <br/>
-			        <?=$plusCourtChemin[1]['nom'] ?> <br/>
-
-		  <?php } ?>
+			        <?=$plusCourtChemin[1]['nom'] ?> <br/> 
+		  <?php } 
+				if($_SESSION['COUNT_TOURS_MISTERX'] > 0)
+				{?>
+					Mister X a utilisé le <?=$routeMisterX?> </br>
+				<?php } ?>
 			</p>
 			<form method="post" action="">
 				<p>Choisisez votre destination:</p>

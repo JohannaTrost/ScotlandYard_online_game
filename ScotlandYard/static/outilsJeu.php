@@ -102,7 +102,7 @@ function deplacerMisterX()
 		$_SESSION['QUARTIERS_DEPART']['ids'][$_SESSION['NUM_DETECTS']] = $arriveesMisterX['ids'][$randIndex]; 
 		$_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']] = $arriveesMisterX['noms'][$randIndex];
 		echo "arrivee de mister x: " . $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']]; 
-		return array($arriveesMisterX['transports'][$randIndex]); 
+		return $arriveesMisterX['transports'][$randIndex]; 
 	}
 }
 
@@ -159,7 +159,44 @@ function choixDestination($indDetect)
 			break;
 			
 		case "econome":
-			echo "TODO";
+			$arriveesPossibles = getDestinationsPossibles($_SESSION['QUARTIERS_DEPART']['ids'][$indDetect]);
+			// si un quartier est le même qu'un des autres detectives déjà deplacés, supprime-le 
+			for($j=0; $j < $indDetect; $j++)
+			{	
+				// s'il n'y a qu'un quartier à choisir évite de le supprimer de la liste même si quelqu'un est déjà dans ce quarier 
+				if(sizeof($arriveesPossibles['ids']) > 1)
+				{
+					$pos = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$j], $arriveesPossibles['ids']);
+					if($pos != false)
+					{
+						unset($arriveesPossibles['ids'][$pos]);
+						unset($arriveesPossibles['noms'][$pos]);
+						unset($arriveesPossibles['transports'][$pos]);
+					}
+				}
+			}
+			foreach($arriveePossibles as &$arrivee)
+			{
+				
+			}
+			// vérifier si un des quartiers est le quartier de mister X 
+			$posMisterX = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$_SESSION['NUM_DETECTS']], $arriveesPossibles['ids']);
+			if($posMisterX == false)
+			{
+				$randIndex = array_rand($arriveesPossibles['ids'], 1);
+				// peut-être la prochaine fois :-(
+				return array('id' => $arriveesPossibles['ids'][$randIndex],
+							 'nom' => $arriveesPossibles['noms'][$randIndex],
+							 'transport' => $arriveesPossibles['transports'][$randIndex]);
+			}
+			else 
+			{ 
+				// wuhuu on a gagné :-)
+				$_SESSION['DETECTS_GAGNE'] = true; 
+				return array('id' => $arriveesPossibles['ids'][$posMisterX],
+							 'nom' => $arriveesPossibles['noms'][$posMisterX],
+							 'transport' => $arriveesPossibles['transports'][$randIndex]);
+			}
 			break;
 			
 		case "pistage":
