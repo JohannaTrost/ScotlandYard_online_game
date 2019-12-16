@@ -13,11 +13,15 @@ if ($_SESSION['STRATEGIE'] == 'pistage')
 					 'nom' => $_SESSION['QUARTIERS_DEPART']['noms'][$_SESSION['NUM_DETECTS']]);
 	$plusCourtChemin = AStar($quartierJoueuse, $quartierMisterX); 
 }
+
 if(isset($_POST['boutonValider'])) {
-	$arrivee = input2QuartierIdNom($_POST['arrivee']);
-	$_SESSION['QUARTIERS_DEPART']['ids'][0] = $arrivee['id']; 
-    $_SESSION['QUARTIERS_DEPART']['noms'][0] = $arrivee['nom'];	
-	deplacerDetectives();
+	if(isset($_POST['arrivee']))
+	{
+		$arrivee = input2QuartierIdNom($_POST['arrivee']);
+		$_SESSION['QUARTIERS_DEPART']['ids'][0] = $arrivee['id']; 
+		$_SESSION['QUARTIERS_DEPART']['noms'][0] = $arrivee['nom'];	
+	}
+	deplacerDetectives(); 
 	$routeMisterX = deplacerMisterX();
 	// vérifier si les détectives ont encerclé mister X
 	if(is_null($routeMisterX)) 
@@ -34,6 +38,16 @@ if(isset($_POST['boutonValider'])) {
 	}
 	
 	$arriveesJoueuse = getDestinationsPossibles($_SESSION['QUARTIERS_DEPART']['ids'][0]);
+	if($_SESSION['STRATEGIE'] == 'econome')
+	{
+		if(isset($arrivee))
+		{
+			$_SESSION['TICKETS'][0][$arrivee['transport']] -= 1; 
+			supprimeSelonTicketsDispo(0, $arriveesJoueuse);
+		}
+		$ticketsMisterX = getTousTicketsMisterX(); 
+	}
+	
 	if($_SESSION['DETECTS_GAGNE'] == true || $_SESSION['COUNT_TOURS_MISTERX'] == 20) {
 		// qn a gagné 
 		header("Location: index.php?page=victoire");

@@ -26,21 +26,49 @@
 		<?php $nbCommunes = mysqli_fetch_assoc($nbC)?>
 		<p>Nombre de Communes: <?= $nbCommunes['nbC'] ?> </p>
 		
+		<?php $nb = mysqli_fetch_assoc($nbP)?>
+		<p>Nombre de Partie: <?= $nb['nbP'] ?> </p>
+		
 		<?php $nbDepartements = mysqli_fetch_assoc($nbD)?>
 		<p>Nombre de Departements: <?= $nbDepartements['nbD'] ?> </p>
-		
-		<table id="statistiqueTab">
-			<?php while ($joueuses = mysqli_fetch_assoc($Joueuses)) { ?>
+        
+
+        	<table id="statistiqueTab" border=6 cellspacing=12 cellpadding=2>
+				<th >liste des meilleurs scores</th>
+			<?php while ($par= mysqli_fetch_assoc($maxGagnants)) { ?>
+					
 					<tr>
-						<th>id</th>
-						<th>Joueuse</th>
+						<td><?= $par['nbr_doublon'] ?></td>
+						<td><?= $par['nomJ'] ?></td>
 					</tr>
+			<?php } ?>
+		</table>
+        <br><br>
+		<table id="statistiqueTab" border=6 cellspacing=12 cellpadding=2>
+			<th>Voici la liste des gagnant</th>
+			<?php while ($participes = mysqli_fetch_array($idG)) { ?>
+					
+					<tr>
+				        <td><?= $participes['idPartie'] ?></td>
+						<td><?= $participes['nomJ'] ?></td>
+					</tr>
+			<?php } ?>
+		</table>
+		<br><br>
+		<table id="statistiqueTab" border=6 cellspacing=12 cellpadding=2>
+				<th>Voici la liste des joueurs</th>
+			<?php while ($joueuses = mysqli_fetch_assoc($Joueuses)) { ?>
+					
 					<tr>
 						<td><?= $joueuses['idJ'] ?></td>
 						<td><?= $joueuses['nomJ'] ?></td>
 					</tr>
 			<?php } ?>
 		</table>
+
+
+
+		
 	</div>
 	<?php include('static/footer.php'); ?>
 </body>

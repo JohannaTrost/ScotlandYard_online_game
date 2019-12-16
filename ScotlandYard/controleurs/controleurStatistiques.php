@@ -30,6 +30,17 @@ if($nbC == FALSE) {
 	$message .= "Aucune Commune n'a été trouvée dans la base de données!";
 }
 
+$requete = "SELECT count(*)  AS nbP FROM Partie";
+$nbP = mysqli_query($connexion, $requete);
+if($nbP == FALSE) {
+	$message .= "Aucune Commune n'a été trouvée dans la base de données!";
+}
+
+$requete = "SELECT idPartie,nomJ  FROM Participe WHERE  victoire_PARTICIPE ='detectives'";
+$idG = mysqli_query($connexion, $requete);
+if($idG == FALSE) {
+	$message .= "Aucune Commune n'a été trouvée dans la base de données!";
+}
 // data tables pour comparer les Joueuses 
 // idJ et nomJ
 // TODO nombre des perdes, Victoires et Parties totales par joueuse et ranking 
@@ -38,4 +49,11 @@ $Joueuses = mysqli_query($connexion, $requete);
 if($Joueuses == FALSE) {
 	$message .= "Aucune joueuse n'a été trouvée dans la base de données!";
 }
+
+$requete = "SELECT COUNT(*) AS nbr_doublon,nomJ FROM Participe GROUP BY nomJ HAVING COUNT(*) > 1 ";
+$maxGagnants = mysqli_query($connexion, $requete);
+if($maxGagnants == FALSE) {
+	$message .= "Aucune Commune n'a été trouvée dans la base de données!";
+}
+
 ?>

@@ -25,7 +25,14 @@ Page d'accueil
 															  <?php
 																for($i=1; $i < $_SESSION['NUM_DETECTS']; $i++)
 																{
-																	echo $_SESSION['QUARTIERS_DEPART']['noms'][$i] . "<br>";
+																	echo $_SESSION['QUARTIERS_DEPART']['noms'][$i];
+																	if($_SESSION['STRATEGIE'] == "econome")
+																	{ ?> 
+																	   (<?=$_SESSION['TICKETS'][$i]['Taxi']?> tickets taxi, 
+																		<?=$_SESSION['TICKETS'][$i]['Bus']?> tickets bus, 
+																		<?=$_SESSION['TICKETS'][$i]['Metro/tramway']?> tickets Métro/tramway)
+															  <?php }
+																	echo "<br>";
 																}
 															   ?>
 			</p>
@@ -45,16 +52,40 @@ Page d'accueil
 				{?>
 					Mister X a utilisé le <?=$routeMisterX?> </br>
 				<?php } ?>
+				
+				<?php 
+				// affiche tickets de joueuse 
+				if($_SESSION['STRATEGIE'] == "econome")
+				{ ?>
+					Tickets de Mister X: </br>
+					<?php 
+					if($_SESSION['COUNT_TOURS_MISTERX'] > 0) {
+						for($i=0; $i < sizeof($ticketsMisterX); $i++) {
+							echo "ticket de " . $ticketsMisterX[$i] . "<br>"; 
+						}
+					}?>
+					il vous reste </br> 
+					<?=$_SESSION['TICKETS'][0]['Taxi']?> tickets taxi </br>
+					<?=$_SESSION['TICKETS'][0]['Bus']?> tickets bus </br>
+					<?=$_SESSION['TICKETS'][0]['Metro/tramway']?> tickets Métro/tramway </br>
+		  <?php } ?>
 			</p>
+			
 			<form method="post" action="">
-				<p>Choisisez votre destination:</p>
 				
-				<!-- foreach ($arriveesJoueuse[1] as &$arrivee) { -->
-				<?php for ($i=0; $i < sizeof($arriveesJoueuse['noms']); $i++) {?>
-				
-					<input type="radio" name="arrivee" value=<?=$arriveesJoueuse['ids'][$i], str_replace(' ', '&nbsp;', $arriveesJoueuse['noms'][$i])?>> <?=str($arriveesJoueuse['noms'][$i])?> en <?=str($arriveesJoueuse['transports'][$i])?><br>
-				  
-				<?php } ?>
+				<?php if($_SESSION['STRATEGIE'] == "econome" && empty($arriveesJoueuse['noms'])) 
+					  {?>
+							<p>Vous ne pouvez plus vous deplacer!</p>
+				  <?php }
+					    else 
+					    {?>	
+							<p>Choisisez votre destination:</p>
+							<?php for ($i=0; $i < sizeof($arriveesJoueuse['noms']); $i++) {?>
+							
+								<input type="radio" name="arrivee" style="color: #0b0b18;" value=<?=$arriveesJoueuse['ids'][$i], str($arriveesJoueuse['noms'][$i]), str($arriveesJoueuse['transports'][$i])?>> <?=str($arriveesJoueuse['noms'][$i])?> en <?=str($arriveesJoueuse['transports'][$i])?><br>
+							  
+							<?php } 
+			            }?>
 				<input type="submit" id="submit" name="boutonValider" value="Soumettre">
 			</form>	
 		</main>

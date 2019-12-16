@@ -93,24 +93,19 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 		$requete = "INSERT INTO Inclus VALUES('". $configId . "', '". $image . "')"; 
 	}
 	
-	// demarre session pour la nouvelle partie 
-	if(isset($_SESSION['COUNT_TOURS_MISTERX']) && !empty($_SESSION['COUNT_TOURS_MISTERX']))
-	{
-		// si une partie est déjà en cours demarre une nouvelle 
-		session_destroy();
-	} 
+	
 	if(!isset($_SESSION)) session_start();
 	$_SESSION['DETECTS_GAGNE'] = false; 
 	$_SESSION['COUNT_TOURS_MISTERX'] = 0; 
     $_SESSION['NUM_DETECTS'] = $nbDetectives;
 	$_SESSION['STRATEGIE'] = $strategie; 
 	$_SESSION['QUARTIERS_DEPART'] = initDeparts(); // 3D array: [[idQuartiers][nomsQuartiers][typesTransport]]
-	if($strategie == "econome")
+	if($_SESSION['STRATEGIE'] == "econome")
 	{
 		$_SESSION['TICKETS'] = array(); 
-		foreach($nbDetectives as &$detective)
+		for($i=0; $i < $nbDetectives; $i++)
 		{
-			$_SESSION['TICKETS'][] = array('taxi' => 10, 'bus' => 8, 'metro' => 4); 
+			$_SESSION['TICKETS'][] = array('Taxi' => 10, 'Bus' => 8, 'Metro/tramway' => 4); 
 		}
 	}
 	// aller sur la page de jeu 
@@ -118,7 +113,17 @@ if(isset($_POST['boutonValider'])) { // formulaire soumis
 	   isset($_SESSION['STRATEGIE']) && !empty($_SESSION['STRATEGIE']) &&
 	   isset($_SESSION['NUM_DETECTS']) && !empty($_SESSION['NUM_DETECTS']))
 	{
-		header("Location: index.php?page=jouer");
+		if($_SESSION['STRATEGIE'] == "econome")
+		{
+			if(isset($_SESSION['TICKETS']) && !empty($_SESSION['TICKETS']))
+			{
+				header("Location: index.php?page=jouer");
+			}
+		}
+		else 
+		{
+			header("Location: index.php?page=jouer");
+		}
 	}
 }
 ?>

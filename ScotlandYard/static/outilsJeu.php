@@ -66,7 +66,14 @@ function getDestinationsPossibles($idDepart)
 		while ($row = mysqli_fetch_assoc($resultat)) {
 			$destinationIds[] = $row['idQ_ARRIVER'];
 			$destinationNoms[] = $row['nomQ'];
-			$destinationTrans[] = $row['typeTransport'];
+			if($row['typeTransport'][-1] == "y")
+			{
+				$destinationTrans[] = "Metro/tramway";
+			}
+			else
+			{
+				$destinationTrans[] = $row['typeTransport'];
+			}
 		}
 	}
 	return array('ids' => $destinationIds, 'noms' => $destinationNoms, 'transports' => $destinationTrans);
@@ -109,12 +116,24 @@ function deplacerMisterX()
 
 function deplacerDetectives()
 {
+	$tousCoince = true; 
 	// déplace chaque détective sauf la joueuse 
 	for($i=1; $i < $_SESSION['NUM_DETECTS']; $i++)
 	{
 		$nouveauQuartier = choixDestination($i);
+		
 		$_SESSION['QUARTIERS_DEPART']['ids'][$i] = $nouveauQuartier['id'];
-		$_SESSION['QUARTIERS_DEPART']['noms'][$i] = $nouveauQuartier['nom'];
+		$_SESSION['QUARTIERS_DEPART']['noms'][$i] = $nouveauQuartier['nom']; 
+		
+		if(!is_null($_SESSION['QUARTIERS_DEPART']['ids'][$i]))
+		{
+			$tousCoince = false; 
+		}
+	}
+	if($tousCoince)
+	{
+		// Mister X a déjà gagné car personne ne peut se deplacer
+		$_SESSION['COUNT_TOURS_MISTERX'] = 20;
 	}
 }
 
@@ -126,20 +145,7 @@ function choixDestination($indDetect)
 
 			$arriveesPossibles = getDestinationsPossibles($_SESSION['QUARTIERS_DEPART']['ids'][$indDetect]);
 			// si un quartier est le même qu'un des autres detectives déjà deplacés, supprime-le 
-			for($j=0; $j < $indDetect; $j++)
-			{	
-				// s'il n'y a qu'un quartier à choisir évite de le supprimer de la liste même si quelqu'un est déjà dans ce quarier 
-				if(sizeof($arriveesPossibles['ids']) > 1)
-				{
-					$pos = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$j], $arriveesPossibles['ids']);
-					if($pos != false)
-					{
-						unset($arriveesPossibles['ids'][$pos]);
-						unset($arriveesPossibles['noms'][$pos]);
-						unset($arriveesPossibles['transports'][$pos]);
-					}
-				}
-			}
+			supprimeQuartierDejaPris($indDetect, $arriveesPossibles); 
 			// vérifier si un des quartiers est le quartier de mister X 
 			$posMisterX = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$_SESSION['NUM_DETECTS']], $arriveesPossibles['ids']);
 			if($posMisterX == false)
@@ -159,43 +165,48 @@ function choixDestination($indDetect)
 			break;
 			
 		case "econome":
+		
 			$arriveesPossibles = getDestinationsPossibles($_SESSION['QUARTIERS_DEPART']['ids'][$indDetect]);
+			
 			// si un quartier est le même qu'un des autres detectives déjà deplacés, supprime-le 
-			for($j=0; $j < $indDetect; $j++)
-			{	
-				// s'il n'y a qu'un quartier à choisir évite de le supprimer de la liste même si quelqu'un est déjà dans ce quarier 
-				if(sizeof($arriveesPossibles['ids']) > 1)
+			supprimeQuartierDejaPris($indDetect, $arriveesPossibles);
+			
+			$message = "transport de " . $indDetect . " " . $arriveesPossibles['transports'][sizeof($arriveesPossibles)-1]; 
+			echo "transport de " . $indDetect . " " . $arriveesPossibles['transports'][sizeof($arriveesPossibles)-1];
+			// si il n'existe plus un ticket supprime le quartier 
+			supprimeSelonTicketsDispo($indDetect, $arriveesPossibles);
+			
+			if(!empty($arriveesPossibles['ids'])) // verifier s'il y a encore des destinations qu'on peut acceder 
+			{
+				// vérifier si un des quartiers est le quartier de mister X 
+				$posMisterX = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$_SESSION['NUM_DETECTS']], $arriveesPossibles['ids']);
+				if($posMisterX == false)
 				{
-					$pos = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$j], $arriveesPossibles['ids']);
-					if($pos != false)
-					{
-						unset($arriveesPossibles['ids'][$pos]);
-						unset($arriveesPossibles['noms'][$pos]);
-						unset($arriveesPossibles['transports'][$pos]);
-					}
+					$randIndex = array_rand($arriveesPossibles['ids'], 1);
+					$_SESSION['TICKETS'][$indDetect][$arriveesPossibles['transports'][$randIndex]] -= 1; 
+					// peut-être la prochaine fois :-(
+					return array('id' => $arriveesPossibles['ids'][$randIndex],
+								 'nom' => $arriveesPossibles['noms'][$randIndex],
+								 'transport' => $arriveesPossibles['transports'][$randIndex]);
+				}
+				else 
+				{ 
+					// wuhuu on a gagné :-)
+					$_SESSION['DETECTS_GAGNE'] = true; 
+					$_SESSION['TICKETS'][$indDetect][$arriveesPossibles['transports'][$randIndex]] -= 1;
+					return array('id' => $arriveesPossibles['ids'][$posMisterX],
+								 'nom' => $arriveesPossibles['noms'][$posMisterX],
+								 'transport' => $arriveesPossibles['transports'][$randIndex]);
 				}
 			}
-			foreach($arriveePossibles as &$arrivee)
-			{
-				
-			}
-			// vérifier si un des quartiers est le quartier de mister X 
-			$posMisterX = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$_SESSION['NUM_DETECTS']], $arriveesPossibles['ids']);
-			if($posMisterX == false)
-			{
-				$randIndex = array_rand($arriveesPossibles['ids'], 1);
-				// peut-être la prochaine fois :-(
-				return array('id' => $arriveesPossibles['ids'][$randIndex],
-							 'nom' => $arriveesPossibles['noms'][$randIndex],
-							 'transport' => $arriveesPossibles['transports'][$randIndex]);
-			}
 			else 
-			{ 
-				// wuhuu on a gagné :-)
-				$_SESSION['DETECTS_GAGNE'] = true; 
-				return array('id' => $arriveesPossibles['ids'][$posMisterX],
-							 'nom' => $arriveesPossibles['noms'][$posMisterX],
-							 'transport' => $arriveesPossibles['transports'][$randIndex]);
+			{
+				return array('id' => null,
+							 'nom' => "Le detective " . 
+									  $indDetect . 
+									  " n'a plus de tickets pour ce deplacer à partir du quartier " . 
+									  $_SESSION['QUARTIERS_DEPART']['noms'][$indDetect],
+							 'transport' => null);
 			}
 			break;
 			
@@ -217,6 +228,25 @@ function choixDestination($indDetect)
 			break;
 	}
 }
+
+function supprimeQuartierDejaPris($indDetect, $arriveesPossibles)
+{
+	for($j=0; $j < $indDetect; $j++)
+	{	
+		// s'il n'y a qu'un quartier à choisir évite de le supprimer de la liste même si quelqu'un est déjà dans ce quarier 
+		if(sizeof($arriveesPossibles['ids']) > 1)
+		{
+			$pos = array_search($_SESSION['QUARTIERS_DEPART']['ids'][$j], $arriveesPossibles['ids']);
+			if($pos != false)
+			{
+				unset($arriveesPossibles['ids'][$pos]);
+				unset($arriveesPossibles['noms'][$pos]);
+				unset($arriveesPossibles['transports'][$pos]);
+			}
+		}
+	}
+}
+
 //-----------------------------------------------------
 // Fonctions pour la stratégie pistage
 //-----------------------------------------------------
@@ -332,6 +362,42 @@ function getMoyCoords($coords)
 }
 
 //-----------------------------------------------------
+// Fonctions pour la stratégie econome
+//-----------------------------------------------------
+
+function supprimeSelonTicketsDispo($indDetect, $arriveesPossibles)
+{
+	foreach(array_keys($_SESSION['TICKETS'][$indDetect]) as &$key)
+	{
+		if($_SESSION['TICKETS'][$indDetect][$key] == 0)
+		{
+			for($i=0; $i < $arriveesPossibles['ids']; $i++)
+			{
+				if($key == $arriveesPossibles['transports'][$i])
+				{
+					unset($arriveesPossibles['ids'][$i]);
+					unset($arriveesPossibles['noms'][$i]);
+					unset($arriveesPossibles['transports'][$i]);
+				}
+			}
+		}
+	}
+}
+
+function getTousTicketsMisterX()
+{
+	$ticketsMisterX = array(); 
+	$resultat = mysqli_query($GLOBALS['connexion'], "SELECT typeTransport FROM `ToursMisterX` WHERE idPartie = (SELECT max(idPartie) AS max FROM ToursMisterX)");
+	if($resultat==TRUE)
+	{
+		while ($row = mysqli_fetch_assoc($resultat)) {
+			$ticketsMisterX[] = $row['typeTransport'];
+		}
+	}
+	return $ticketsMisterX;
+} 
+	
+//-----------------------------------------------------
 // Fonctions d'aide
 //-----------------------------------------------------
 
@@ -342,17 +408,19 @@ function str($input)
 
 function input2QuartierIdNom($input)
 {
-	if (is_numeric(substr($input, 0, 3))) 
+	$inputTrans = extractTransport($input); 
+	
+	if (is_numeric(substr($inputTrans[0], 0, 3))) 
 	{
-		return array('id' => (int)substr($input, 0, 3), 'nom' => substr($input, 3)); 	
+		return array('id' => (int)substr($input, 0, 3), 'nom' => substr($inputTrans[0], 3), 'transport' => $inputTrans[1]); 	
 	}
-	else if (is_numeric(substr($input, 0, 2))) 
+	else if (is_numeric(substr($inputTrans[0], 0, 2))) 
 	{
-		return array('id' => (int)substr($input, 0, 2), 'nom' => substr($input, 2)); 	
+		return array('id' => (int)substr($input, 0, 2), 'nom' => substr($inputTrans[0], 2), 'transport' => $inputTrans[1]); 	
 	}
 	else 
 	{
-		return array('id' => (int)substr($input, 0, 1), 'nom' => substr($input, 1)); 
+		return array('id' => (int)substr($input, 0, 1), 'nom' => substr($inputTrans[0], 1), 'transport' => $inputTrans[1]); 
 	}
 }
 
@@ -364,4 +432,19 @@ function cmp($a, $b)
     return ($a["fCout"] < $b["fCout"]) ? -1 : 1;
 }
 
+function extractTransport($input)
+{
+	if($input[-1] == "i")
+	{
+		return array(substr($input, 0, -4), "Taxi"); 
+	}
+	else if($input[-1] == "y")
+	{
+		return array(substr($input, 0, -13), "Metro/tramway");
+	}
+	else if($input[-1] == "s")
+	{
+		return array(substr($input, 0, -3), "Bus");
+	}
+}
 ?>
